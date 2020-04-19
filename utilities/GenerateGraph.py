@@ -16,10 +16,18 @@ def join_graphs_with_connections(G, H, connectivity):
     connections = np.zeros(number_of_vertices)
     number_of_cross_edges = np.floor(number_of_vertices * connectivity).astype(int)
     connections[:number_of_cross_edges] = 1
-    print(g_vertex_count)
+    rg = np.random.default_rng()
+    rg.shuffle(connections)
     A = nx.disjoint_union(G, H)
     ut = np.triu(nx.to_numpy_array(A), 1)
-    print(ut)
+    position = 0
+    for i in range(g_vertex_count):
+        for j in range(h_vertex_count):
+            ut[i, (g_vertex_count + j)] = connections[position]
+            position += 1
+    lt = np.transpose(ut)
+    symmetric_graph = np.add(ut, lt)
+    return symmetric_graph
 
 
 def generate_random_graph(size, connectivity):
@@ -58,9 +66,10 @@ def plot(G):
 
 
 def main():
-    G = nx.from_numpy_matrix(generate_random_graph(10, .1))
-    H = nx.from_numpy_matrix(generate_random_graph(11, .1))
-    join_graphs_with_connections(G,H,.4)
+    G = nx.from_numpy_matrix(generate_random_graph(10, .5))
+    H = nx.from_numpy_matrix(generate_random_graph(11, .5))
+    J = nx.from_numpy_matrix(join_graphs_with_connections(G,H,.1))
+    plot(J)
 
 
 if __name__ == "__main__":
