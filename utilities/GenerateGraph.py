@@ -8,7 +8,11 @@ class GraphException(Exception):
         super().__init__()
         self.message = message
 
-
+'''
+    G - Graph 1
+    H - Graph 2
+    connectivity - percent of 
+'''
 def join_graphs_with_connections(G, H, connectivity):
     g_vertex_count = len(G.nodes)
     h_vertex_count = len(H.nodes)
@@ -65,10 +69,18 @@ def plot(G):
     plt.show()
 
 
+def plot_graph_random(G):
+    pos = nx.random_layout(G)
+    nx.draw_networkx_nodes(G, pos, node_color='r', node_size=100, alpha=1)
+    nx.draw_networkx_edges(G, pos)
+    plt.axis('off')
+    plt.show()
+
+
 def main():
-    G = nx.from_numpy_matrix(generate_random_graph(10, .5))
-    H = nx.from_numpy_matrix(generate_random_graph(11, .5))
-    J = nx.from_numpy_matrix(join_graphs_with_connections(G,H,.1))
+    G = nx.from_numpy_matrix(generate_random_graph(100, .5))
+    H = nx.from_numpy_matrix(generate_random_graph(100, .5))
+    J = nx.from_numpy_matrix(join_graphs_with_connections(G,H,.01))
     plot(J)
 
 
