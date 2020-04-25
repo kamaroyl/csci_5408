@@ -90,13 +90,17 @@ def partition_fiedler(fiedler_vector):
     return partition
 
 
-def main():
+def make_suspicious_graph():
     G = nx.from_numpy_matrix(utils.generate_random_graph(100, .75))
     H = nx.from_numpy_matrix(utils.generate_random_graph(100, .75))
+    return nx.from_numpy_matrix(utils.join_graphs_with_connections(G, H, .01))
 
-    J = nx.from_numpy_matrix(utils.join_graphs_with_connections(G, H, .01))
+
+def main():
+    J = make_suspicious_graph()
 
     utils.plot_graph_random(J)
+
     LG = nx.laplacian_matrix(J)
     eigen_values = LA.eig(LG.toarray())
     eigen_values = (np.around(eigen_values[0]), eigen_values[1])
