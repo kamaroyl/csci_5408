@@ -1,1 +1,1 @@
-from .GenerateGraph import generate_random_graph, join_graphs_with_connections, plot, plot_graph_random
+from .GenerateGraph import generate_random_graph, build_grid, join_graphs_with_connections, plot, plot_graph_random
