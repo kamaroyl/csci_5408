@@ -1,9 +1,11 @@
+import matplotlib
 import matplotlib.pyplot as plt
 import networkx as nx
 import scipy.linalg as LA
 import numpy as np
 np.set_printoptions(threshold=np.inf)
 import utilities as utils
+matplotlib.use("TkAgg")
 
 '''
     merge sort method with comparison on the eigen value in a tuple of (eigen value, eigen vector)

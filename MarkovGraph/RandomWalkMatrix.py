@@ -57,7 +57,7 @@ def random_walk_matrix():
     X_Prev = np.copy(V)
     X_Current = V
     count = 0
-    while count < 1000:
+    while count < 250:
         X_Prev = np.copy(X_Current)
         X_Current = np.matmul(W, X_Prev)
 
