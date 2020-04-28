@@ -112,6 +112,40 @@ def plot_graph_random(G):
     plt.show()
 
 
+    '''
+        merge sort method with comparison on the eigen value in a tuple of (eigen value, eigen vector)
+    '''
+
+def sort(eigen_value_tuples):
+    eigen_value_tuples_length = len(eigen_value_tuples)
+    if eigen_value_tuples_length > 1:
+        middle = eigen_value_tuples_length // 2
+        left = eigen_value_tuples[:middle]
+        right = eigen_value_tuples[middle:]
+        sort(left)
+        sort(right)
+        i = j = k = 0
+
+        while i < len(left) and j < len(right):
+            if left[i][0] < right[j][0]:
+                eigen_value_tuples[k] = left[i]
+                i += 1
+            else:
+                eigen_value_tuples[k] = right[j]
+                j += 1
+            k += 1
+
+        while i < len(left):
+            eigen_value_tuples[k] = left[i]
+            i += 1
+            k += 1
+
+        while j < len(right):
+            eigen_value_tuples[k] = right[j]
+            j += 1
+            k += 1
+
+
 def main():
     G = nx.from_numpy_matrix(generate_random_graph(100, .5))
     H = nx.from_numpy_matrix(generate_random_graph(100, .5))

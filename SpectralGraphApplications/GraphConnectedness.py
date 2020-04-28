@@ -3,41 +3,11 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import scipy.linalg as LA
 import numpy as np
+from utilities.GenerateGraph import sort
 np.set_printoptions(threshold=np.inf)
 import utilities as utils
 matplotlib.use("TkAgg")
 
-'''
-    merge sort method with comparison on the eigen value in a tuple of (eigen value, eigen vector)
-'''
-def sort(eigen_value_tuples):
-    eigen_value_tuples_length = len(eigen_value_tuples)
-    if eigen_value_tuples_length > 1:
-        middle = eigen_value_tuples_length // 2
-        left = eigen_value_tuples[:middle]
-        right = eigen_value_tuples[middle:]
-        sort(left)
-        sort(right)
-        i = j = k = 0
-
-        while i < len(left) and j < len(right):
-            if left[i][0] < right[j][0]:
-                eigen_value_tuples[k] = left[i]
-                i += 1
-            else:
-                eigen_value_tuples[k] = right[j]
-                j += 1
-            k += 1
-
-        while i < len(left):
-            eigen_value_tuples[k] = left[i]
-            i += 1
-            k += 1
-
-        while j < len(right):
-            eigen_value_tuples[k] = right[j]
-            j += 1
-            k += 1
 
 
 def plot_partition(G, partition):

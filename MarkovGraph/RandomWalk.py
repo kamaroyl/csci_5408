@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import random
-from utilities.GenerateGraph import build_grid
+from utilities.GenerateGraph import build_grid, sort
 
 
 def approximate_cover(G):
@@ -26,14 +26,39 @@ def approximate_cover(G):
     # This is one definition of the random walk
     W = np.matmul(M, D_inv)
     L = I - W
+    eigen_values = np.linalg.eig(L)
+    eigen_values = (eigen_values[0], eigen_values[1])
+    sorted_eigen_values = []
+
+    for i in range(len(eigen_values[0])):
+        sorted_eigen_values.append((eigen_values[0][i], eigen_values[1][i]))
+    sort(sorted_eigen_values)
 
     # 0 = lambda_1 <=lambda_2 <= lambda_3 <= ... <= lambda_n
-    eigen_vals = np.delete(sorted(np.linalg.eigvals(L)), 0)
-    reciperocal_sqrt_eigen_vals = np.reciprocal(np.sqrt(eigen_vals))
-
+    sorted_eigen_values = sorted_eigen_values[1:]
     # generate n gaussian i.i.d values N(0,1)
     g = np.random.normal(loc=0, scale=1, size=(n-1))
-    print(np.multiply(n, np.square(np.linalg.norm(np.multiply(reciperocal_sqrt_eigen_vals, g), ord=np.inf))))
+
+    sum_of_eigenvectors = np.zeros(sorted_eigen_values[0][1].shape)
+    for i in range(len(sorted_eigen_values)):
+        weight = np.multiply(np.reciprocal(np.sqrt(sorted_eigen_values[i][0])), g[i])
+        # print("weight")
+        # print(weight)
+        scaled_eigen_vector = np.multiply(weight, sorted_eigen_values[i][1])
+        # print("scaled Eigenvector")
+        # print(scaled_eigen_vector)
+        sum_of_eigenvectors = np.add(sum_of_eigenvectors, scaled_eigen_vector)
+        # print("Running sum")
+        # print(sum_of_eigenvectors)
+    # print("End sum of eigen vectors")
+    # print(sum_of_eigenvectors)
+    inf_norm = np.linalg.norm(sum_of_eigenvectors, ord=np.inf)
+    # print("Infinity Norm")
+    # print(inf_norm)
+    cover_estimate = np.multiply(n, np.square(inf_norm))
+    print("Cover Estimate")
+    print(cover_estimate)
+
 
 '''
  G = build_grid(5,5)
@@ -58,6 +83,7 @@ def random_walk(G, starting_node):
             nodes_left.remove(current_location)
         current_location = random.choice(next_locations)
         count = count + 1
+    print("Actual Count")
     print(count)
 
 
